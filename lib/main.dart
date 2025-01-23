@@ -6,6 +6,7 @@ import 'features/search/presentation/widgets/search_widget.dart';
 import 'features/action_sheet/presentation/screens/action_sheet_demo_screen.dart';
 import 'features/action_sheet/presentation/screens/custom_action_sheet_demo_screen.dart';
 import 'features/dio_example/presentation/screens/dio_demo_screen.dart';
+import 'features/article/presentation/screens/article_list_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -74,6 +75,14 @@ class HomeScreen extends StatelessWidget {
             title: const Text('Auth Demo'),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => LoginScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.article),
+            title: const Text('Articles'),
+            subtitle: const Text('Clean Architecture Demo'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const ArticleListScreen()),
             ),
           ),
         ],
