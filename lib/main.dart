@@ -1,9 +1,11 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_search/features/auth/presentation/screens/login_screen.dart';
 import 'features/search/presentation/widgets/search_widget.dart';
 import 'features/action_sheet/presentation/screens/action_sheet_demo_screen.dart';
 import 'features/action_sheet/presentation/screens/custom_action_sheet_demo_screen.dart';
+import 'features/dio_example/presentation/screens/dio_demo_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -56,6 +58,22 @@ class HomeScreen extends StatelessWidget {
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (_) => const CustomActionSheetDemoScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.http),
+            title: const Text('Dio 示例'),
+            subtitle: const Text('网络请求演示'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const DioDemoScreen()),
+            ),
+          ),
+          // 在 main.dart 中添加路由
+          ListTile(
+            leading: const Icon(Icons.login),
+            title: const Text('Auth Demo'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => LoginScreen()),
             ),
           ),
         ],
