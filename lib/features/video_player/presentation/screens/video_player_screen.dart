@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_search/features/video_player/domain/entities/video_state.dart';
 import 'package:video_player/video_player.dart';
 import '../providers/video_player_provider.dart';
 import '../widgets/video_controls.dart';
@@ -7,7 +8,17 @@ import '../widgets/video_progress_bar.dart';
 import '../widgets/video_progress_indicator.dart';
 
 class VideoPlayerScreen extends ConsumerStatefulWidget {
-  const VideoPlayerScreen({Key? key}) : super(key: key);
+  final String? assetPath;
+  final String? networkUrl;
+
+  const VideoPlayerScreen({
+    super.key,
+    this.assetPath,
+    this.networkUrl,
+  }) : assert(
+          (assetPath != null) != (networkUrl != null),
+          'Either provide assetPath or networkUrl, not both or neither',
+        );
 
   @override
   ConsumerState<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
@@ -15,10 +26,21 @@ class VideoPlayerScreen extends ConsumerStatefulWidget {
 
 class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen>
     with WidgetsBindingObserver {
+  late final AutoDisposeStateNotifierProvider<VideoPlayerNotifier, VideoState>
+      _playerProvider;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _playerProvider =
+        StateNotifierProvider.autoDispose<VideoPlayerNotifier, VideoState>(
+      (ref) => VideoPlayerNotifier(
+        assetPath: widget.assetPath,
+        networkUrl: widget.networkUrl,
+        config: ref.watch(videoConfigProvider),
+      ),
+    );
   }
 
   @override
@@ -29,15 +51,15 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    ref.read(videoPlayerControllerProvider.notifier).onAppLifecycleStateChange(
+    ref.read(_playerProvider.notifier).onAppLifecycleStateChange(
           state == AppLifecycleState.resumed,
         );
   }
 
   @override
   Widget build(BuildContext context) {
-    final videoState = ref.watch(videoPlayerControllerProvider);
-    final controller = ref.watch(videoPlayerProvider);
+    final videoState = ref.watch(_playerProvider);
+    final controller = ref.watch(videoPlayerProvider(_playerProvider));
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +76,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen>
                 children: [
                   if (videoState.isInitialized && controller != null) ...[
                     VideoPlayer(controller),
-                    const VideoControls(),
+                    VideoControls(provider: _playerProvider),
                   ] else if (videoState.error != null)
                     Center(
                       child: Text(
@@ -68,15 +90,14 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen>
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: [
-                SizedBox(height: 16),
-                SizedBox(height: 16),
-                VideoProgressBar(),
-                SizedBox(height: 16),
-                HomeVideoProgressIndicator(),
+                const SizedBox(height: 16),
+                VideoProgressBar(provider: _playerProvider),
+                const SizedBox(height: 16),
+                HomeVideoProgressIndicator(provider: _playerProvider),
               ],
             ),
           ),

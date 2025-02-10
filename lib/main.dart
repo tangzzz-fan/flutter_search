@@ -91,7 +91,11 @@ class HomeScreen extends StatelessWidget {
             title: const Text('视频播放器'),
             subtitle: const Text('Video Player Demo'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const VideoPlayerScreen()),
+              MaterialPageRoute(
+                builder: (_) => VideoPlayerScreen(
+                  assetPath: 'assets/videos/demo.mp4',
+                ),
+              ),
             ),
           ),
         ],

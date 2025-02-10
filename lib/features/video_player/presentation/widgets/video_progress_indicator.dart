@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_search/features/video_player/domain/entities/video_state.dart';
 import 'package:flutter_search/features/video_player/presentation/providers/video_player_provider.dart';
 
 class HomeVideoProgressIndicator extends ConsumerWidget {
-  const HomeVideoProgressIndicator({Key? key}) : super(key: key);
+  final AutoDisposeStateNotifierProvider<VideoPlayerNotifier, VideoState> provider;
+
+  const HomeVideoProgressIndicator({
+    Key? key,
+    required this.provider,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final videoState = ref.watch(videoPlayerControllerProvider);
+    final videoState = ref.watch(provider);
 
     return Column(
       children: [

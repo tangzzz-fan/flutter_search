@@ -10,8 +10,10 @@ final videoPlayerControllerProvider =
   ),
 );
 
-final videoPlayerProvider = Provider.autoDispose<VideoPlayerController?>((ref) {
-  return ref.watch(videoPlayerControllerProvider.notifier).controller;
+final videoPlayerProvider = Provider.family.autoDispose<VideoPlayerController?,
+        AutoDisposeStateNotifierProvider<VideoPlayerNotifier, VideoState>>(
+    (ref, provider) {
+  return ref.watch(provider.notifier).controller;
 });
 
 class VideoPlayerNotifier extends StateNotifier<VideoState> {
