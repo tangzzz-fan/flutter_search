@@ -89,9 +89,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen>
                   '当前播放时间: ${videoState.position.inSeconds}秒\n'
                   '视频总时长: ${videoState.duration.inSeconds}秒\n'
                   '播放状态: ${videoState.isPlaying ? "播放中" : "已暂停"}\n'
-                  '缓冲状态: ${videoState.isBuffering ? "缓冲中" : "正常"}\n'
-                  '进度: ${(videoState.progress * 100).toStringAsFixed(1)}%\n'
-                  '是否为暗色区间: ${videoState.isDarkSection}',
+                  '缓冲状态: ${videoState.isBuffering ? "缓冲中" : "正常"}\n',
                 ),
                 const SizedBox(height: 8),
                 Text(
