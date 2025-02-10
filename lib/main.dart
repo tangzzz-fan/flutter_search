@@ -7,6 +7,7 @@ import 'features/action_sheet/presentation/screens/action_sheet_demo_screen.dart
 import 'features/action_sheet/presentation/screens/custom_action_sheet_demo_screen.dart';
 import 'features/dio_example/presentation/screens/dio_demo_screen.dart';
 import 'features/article/presentation/screens/article_list_screen.dart';
+import 'features/video_player/presentation/screens/video_player_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -83,6 +84,14 @@ class HomeScreen extends StatelessWidget {
             subtitle: const Text('Clean Architecture Demo'),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const ArticleListScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.play_circle_outline),
+            title: const Text('视频播放器'),
+            subtitle: const Text('Video Player Demo'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const VideoPlayerScreen()),
             ),
           ),
         ],
